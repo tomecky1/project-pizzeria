@@ -57,6 +57,7 @@
       thisProduct.id = id;
       thisProduct.data = data;
       thisProduct.renderInMenu();
+      thisProduct.initAcordion();
       console.log('new Product:', thisProduct);
     }
     renderInMenu(){
@@ -71,6 +72,39 @@
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
     }
+    initAcordion(){
+      const thisProduct = this;
+      /* find the clickable trigger (the element that should react to clicking) */
+      const clickableTrigger = document.querySelector('.product__header');
+      /* START: click event listener to trigger */
+      clickableTrigger.addEventListener('click', function(){
+      /* IN PROGRESS NO IDEA? */    
+      
+        const triggerClickHandler = function (event){
+        /* prevent default action for event */
+          event.preventDefault();
+          const clickedElement = this;
+          console.log('Element kliknięty! Zawartość event:', event);
+          /* toggle active class on element of thisProduct */
+          console.log('clickedElement:', clickedElement);
+          thisProduct.element.classList.add('.product__header');       
+          /* find all active products */
+          const activeProducts = document.querySelectorAll('active');
+          /* START LOOP: for each active product */
+          for (let activeProduct of activeProducts){
+            /* START: if the active product isn't the element of thisProduct */
+            if (activeProduct != thisProduct.element){
+              /* remove class active for the active product */
+              thisProduct.element.classList.remove('.product__header');
+            /* END: if the active product isn't the element of thisProduct */
+            } 
+            /* END LOOP: for each active product */
+          }
+          /* END: click event listener to trigger */
+        };
+        triggerClickHandler();
+      });      
+    }   
   }
   const app = {
     initMenu: function(){

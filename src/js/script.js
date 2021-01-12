@@ -57,7 +57,10 @@
       thisProduct.id = id;
       thisProduct.data = data;
       thisProduct.renderInMenu();
+      thisProduct.getElements();
       thisProduct.initAcordion();
+      thisProduct.initOrderForm();
+      thisProduct.processOrder();
       console.log('new Product:', thisProduct);
     }
     renderInMenu(){
@@ -71,6 +74,14 @@
       const menuContainer = document.querySelector(select.containerOf.menu);
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
+    }
+    getElements(){
+      const thisProduct = this;
+      thisProduct.clickableTriggers = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
     }
     initAcordion(){
       const thisProduct = this;
@@ -99,8 +110,44 @@
         /* END: click event listener to trigger */
       });        
     }
+    initOrderForm(){
+      const thisProduct = this;
+      thisProduct.form.addEventListener('submit', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+      for(let input of thisProduct.formInputs){
+        input.addEventListener('change', function(){
+          thisProduct.processOrder();
+        });
+      }
+      thisProduct.cartButton.addEventListener('click', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+    }  
+    processOrder(){
+      const thisProduct = this;
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      console.log('formData', formData);
+      let price = thisProduct.data.price;
+      for(let paramId in thisProduct.data.params){
+        const param = thisProduct.data.params[paramId];
+        for(let optionId in param.options){
+          const option = param.options[optionId];
+          const optionSelected = formData.hasOwnProperty(paramId) && formData[paramId].indexOf(optionId) > -1;
+          if (optionSelected && !option.default){
+            price += option.price;
+          }
+          else if(!optionSelected && option.default){
+            price -= option.price;
+          }
+        }
+      }
+      thisProduct.priceElem = price;
+    }
+  
   }  
-
   const app = {
     initMenu: function(){
       const thisApp = this;

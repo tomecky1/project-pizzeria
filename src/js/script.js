@@ -144,7 +144,7 @@
           }
         }
       }
-      thisProduct.priceElem = price;
+      thisProduct.priceElem.innerHTML = price;
     }
   
   }  

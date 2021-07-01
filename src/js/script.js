@@ -174,6 +174,12 @@
       thisApp.data = dataSource;
     }  
   };
-  
+  class AmountWidget {
+    constructor(element){
+      const thisWidget = this;
+      console.log('Amount Widget', thisWidget);
+      console.log('constructor arguments', element);
+    }
+  }
   app.init();
 }

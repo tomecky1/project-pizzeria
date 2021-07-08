@@ -203,6 +203,11 @@
       thisWidget.value = newValue;
       thisWidget.input.value = thisWidget.value;
     }
+    initActions(){
+      thisWidget.input.addEventListener('change', function(){
+        
+      });
+    }
   }
   app.init();
 }

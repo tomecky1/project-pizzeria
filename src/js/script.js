@@ -153,7 +153,6 @@
       }
       thisProduct.priceElem.innerHTML = price;
     }
-  
   }  
   const app = {
     initMenu: function(){

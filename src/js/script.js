@@ -200,6 +200,7 @@
       /* TODO: Add validation */
 
       thisWidget.value = newValue;
+      announce();
       thisWidget.input.value = thisWidget.value;
     }
     initActions(){
@@ -214,6 +215,11 @@
         event.preventDefault;
         thisWidget.setValue(thisWidget.value + 1);
       });
+    }
+    announce(){
+      const thisWidget = this;
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
     }
   }
   app.init();

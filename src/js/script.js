@@ -67,6 +67,9 @@
     initAmountWidget(){
       const thisProduct = this;
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      thisProduct.amountWidgetElem.addEventListener('updated', function(){
+        thisProduct.processOrder();
+      });
     }
     renderInMenu(){
       const thisProduct = this;
@@ -151,6 +154,8 @@
           }
         }
       }
+      /* multiply price by amount */
+      price *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = price;
     }
   }  
@@ -200,12 +205,13 @@
       /* TODO: Add validation */
 
       thisWidget.value = newValue;
-      announce();
+      thisWidget.announce();
       thisWidget.input.value = thisWidget.value;
     }
     initActions(){
+      const thisWidget = this;
       thisWidget.input.addEventListener('change', function(){
-      thisWidget.setValue(thisWidget.input.setValue);
+        thisWidget.setValue(thisWidget.input.setValue);
       });
       thisWidget.linkDecrease.addEventListener('click', function(){
         event.preventDefault;
